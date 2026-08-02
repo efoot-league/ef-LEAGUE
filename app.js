@@ -5085,61 +5085,52 @@ html += `
     }
 };
 
-// --- ADD TO HOME SCREEN LOGIC ---
-let deferredPrompt;
-const installBanner = document.getElementById('installAppBanner');
-const installBtn = document.getElementById('btnInstallApp');
-const closeBtn = document.getElementById('btnCloseInstall');
-const installInstructions = document.getElementById('installInstructions');
+// --- CUSTOM INSTALL BANNER LOGIC ---
+let deferredPrompt; // A variable to save the browser's install event
+const installBanner = document.getElementById('customInstallBanner');
+const installBtn = document.getElementById('installBtn');
+const cancelInstallBtn = document.getElementById('cancelInstallBtn');
 
-// Check if app is already installed (standalone mode)
-const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-
-// 1. Handle Android / Chrome (Captures the native prompt)
+// 1. Intercept the browser's default install prompt
 window.addEventListener('beforeinstallprompt', (e) => {
-    // Prevent the mini-infobar from appearing on mobile
+    // Prevent the default browser mini-banner from appearing at all
     e.preventDefault();
-    // Stash the event so it can be triggered later
+    
+    // Save the event so we can trigger it when the user clicks our custom button
     deferredPrompt = e;
     
-    // Show our custom banner and the install button
-    if (!isStandalone) {
-        installBanner.classList.remove('hidden');
-        installBtn.style.display = 'block';
-    }
+    // Reveal our custom HTML banner
+    installBanner.style.display = 'block';
 });
 
-// When the user clicks your custom Install button
+// 2. What happens when they click "Install" on YOUR banner
 installBtn.addEventListener('click', async () => {
-    installBanner.classList.add('hidden'); // Hide the banner
     if (deferredPrompt) {
-        deferredPrompt.prompt(); // Show the native browser prompt
+        // Show the official system install dialog
+        deferredPrompt.prompt();
+        
+        // Wait to see if they accepted or declined the system dialog
         const { outcome } = await deferredPrompt.userChoice;
-        console.log(`User interaction outcome: ${outcome}`);
-        deferredPrompt = null; // Clear it out
+        
+        // Regardless of their choice, hide our custom HTML banner
+        installBanner.style.display = 'none';
+        
+        // Clear the saved prompt so it can't be used again
+        deferredPrompt = null;
     }
 });
 
-// 2. Handle iOS / Safari (Apple doesn't support 'beforeinstallprompt')
-const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-
-if (isIOS && !isStandalone) {
-    // Show banner but change instructions for Apple devices
-    installBanner.classList.remove('hidden');
-    installInstructions.innerHTML = `Tap <i class="fas fa-external-link-alt"></i> Share, then <strong>'Add to Home Screen'</strong>`;
-}
-
-// 3. Allow user to dismiss the banner
-closeBtn.addEventListener('click', () => {
-    installBanner.classList.add('hidden');
-    // Optional: Save to localStorage so you don't annoy them every time they visit
-    localStorage.setItem('hideInstallBanner', 'true');
+// 3. What happens when they click "Not Now / Cancel"
+cancelInstallBtn.addEventListener('click', () => {
+    // Hide our custom banner completely
+    installBanner.style.display = 'none';
 });
 
-// Optional: Don't show if they dismissed it previously
-if (localStorage.getItem('hideInstallBanner') === 'true') {
-    installBanner.classList.add('hidden');
-}
+// 4. (Optional Safety) Hide the banner if the app successfully installs
+window.addEventListener('appinstalled', () => {
+    installBanner.style.display = 'none';
+    deferredPrompt = null;
+});
 
 // --- CSS ANIMATION SPLASH SCREEN LOGIC ---
 const welcomeScreen = document.getElementById('welcomeScreen');
