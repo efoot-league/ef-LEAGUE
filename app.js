@@ -5120,10 +5120,8 @@ installBtn.addEventListener('click', async () => {
     }
 });
 
-// 3. What happens when they click "Not Now / Cancel"
 cancelInstallBtn.addEventListener('click', () => {
-    // Hide our custom banner completely
-    installBanner.style.display = 'none';
+    installBanner.style.display = 'none'; // Simply hides it for this current session
 });
 
 // 4. (Optional Safety) Hide the banner if the app successfully installs
