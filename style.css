@@ -1445,7 +1445,6 @@ body { font-family: 'Rajdhani', sans-serif; background-color: var(--bg-dark); co
     margin: 0;
     padding-left: 5px;
 }
-
 /* INSTALL APP BUTTON STYLES */
 .btn-install-sidebar {
     background: #00e5ff;
@@ -1466,5 +1465,3 @@ body { font-family: 'Rajdhani', sans-serif; background-color: var(--bg-dark); co
 .btn-install-sidebar:active {
     transform: scale(0.95);
 }
-
-
