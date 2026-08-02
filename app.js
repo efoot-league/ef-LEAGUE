@@ -5085,7 +5085,7 @@ html += `
     }
 };
 
-// --- CUSTOM INSTALL BUTTON LOGIC ---
+// --- CUSTOM INSTALL BUTTON LOGIC (FIXED) ---
 let deferredPrompt = null;
 const installAppBtn = document.getElementById('installAppBtn');
 
@@ -5095,20 +5095,21 @@ window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     // Save the event to use when they click our button
     deferredPrompt = e;
+    console.log("Install prompt is ready!");
 });
 
 // 2. What happens when they click YOUR permanent button
 if (installAppBtn) {
     installAppBtn.addEventListener('click', async () => {
-        // First check: Are they currently playing inside the installed app?
+        // Check 1: Are they ALREADY playing inside the installed standalone app?
         const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
         if (isStandalone) {
-            alert("You are already playing the installed version of the app!");
-            return; // Stop the code here
+            alert("You are currently using the installed version of the app!");
+            return;
         }
 
-        // Second check: If they are in a browser and can install it
+        // Check 2: Is the browser's install prompt ready?
         if (deferredPrompt) {
             // Trigger the official browser install dialog
             deferredPrompt.prompt();
@@ -5116,13 +5117,12 @@ if (installAppBtn) {
             // Wait to see if they click Install or Cancel
             const { outcome } = await deferredPrompt.userChoice;
             
-            // If they install it, clear the saved prompt
             if (outcome === 'accepted') {
                 deferredPrompt = null;
             }
         } else {
-            // Third check: If there is no prompt available, they likely already installed it
-            alert("eFootball UCL is already installed on your device!");
+            // Check 3: If deferredPrompt is null, guide the user instead of assuming it's installed
+            alert("Install prompt is preparing or not supported. You can also tap Chrome's 3-dot menu (⋮) and tap 'Add to Home screen' to install manually!");
         }
     });
 }
@@ -5130,7 +5130,7 @@ if (installAppBtn) {
 // 3. Confirm when the installation finishes successfully
 window.addEventListener('appinstalled', () => {
     deferredPrompt = null;
-    alert("Installation successful! You can now open it from your home screen.");
+    alert("Installation successful! You can now open eFootball UCL from your home screen.");
 });
 
 // --- CSS ANIMATION SPLASH SCREEN LOGIC ---
