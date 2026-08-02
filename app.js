@@ -51,6 +51,22 @@ window.loadUsersForMentions = async function() {
     }
 };
 
+// ==========================================
+// 🚀 PWA SERVICE WORKER REGISTRATION
+// ==========================================
+// Register this immediately on page load so Chrome allows app installation
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/firebase-messaging-sw.js')
+            .then((registration) => {
+                console.log('PWA Service Worker registered successfully.');
+            })
+            .catch((error) => {
+                console.error('PWA Service Worker registration failed:', error);
+            });
+    });
+}
+
 
 // 📚 PAGINATION TRACKERS
 let currentTacticsLimit = 5; // Start by loading only the 5 most recent posts
@@ -5132,6 +5148,8 @@ window.addEventListener('appinstalled', () => {
     deferredPrompt = null;
     alert("Installation successful! You can now open eFootball UCL from your home screen.");
 });
+
+
 
 // --- CSS ANIMATION SPLASH SCREEN LOGIC ---
 const welcomeScreen = document.getElementById('welcomeScreen');
