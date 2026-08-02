@@ -1446,75 +1446,76 @@ body { font-family: 'Rajdhani', sans-serif; background-color: var(--bg-dark); co
     padding-left: 5px;
 }
 
-/* Install Banner Styles */
-.install-banner {
+/* CUSTOM INSTALL BANNER STYLES */
+.install-banner-overlay {
     position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    max-width: 400px;
-    background: #0f172a; /* Matches your dark theme panels */
-    border: 1px solid #fbbf24; /* Yellow accent */
-    border-radius: 12px;
-    padding: 15px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px); /* Gives it a premium glass effect */
+    z-index: 999999; /* Ensures it sits above EVERYTHING else */
+    padding: 15px 20px;
+    border-top: 2px solid #00e5ff; /* Cyan neon glow */
+    box-shadow: 0 -5px 20px rgba(0, 229, 255, 0.2);
+    color: white;
+}
+
+.install-banner-content {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: center;
-    z-index: 9999;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-    transition: all 0.3s ease;
-}
-
-.install-banner.hidden {
-    bottom: -100px;
-    opacity: 0;
-    pointer-events: none;
-}
-
-.install-content {
-    display: flex;
-    align-items: center;
+    max-width: 800px;
+    margin: 0 auto;
     gap: 15px;
 }
 
 .install-icon {
-    font-size: 24px;
-    color: #fbbf24;
+    width: 55px;
+    height: 55px;
+    border-radius: 12px;
 }
 
 .install-text {
+    flex-grow: 1; /* Pushes the buttons to the right */
+}
+
+.install-text h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #00e5ff;
+    font-weight: bold;
+}
+
+.install-text p {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: #cccccc;
+}
+
+.install-buttons {
     display: flex;
     flex-direction: column;
-    color: #fff;
-    font-family: 'Rajdhani', sans-serif;
-}
-
-.install-text strong {
-    font-size: 1.1rem;
-}
-
-.install-text span {
-    font-size: 0.85rem;
-    color: #94a3b8;
+    gap: 8px;
 }
 
 .btn-install {
-    background: #fbbf24;
-    color: #020617;
+    background: #00e5ff;
+    color: #000;
     border: none;
-    padding: 8px 15px;
-    border-radius: 6px;
+    padding: 10px 20px;
     font-weight: bold;
+    border-radius: 5px;
     cursor: pointer;
-    font-family: 'Rajdhani', sans-serif;
+    font-size: 14px;
 }
 
-.btn-close-install {
+.btn-cancel {
     background: transparent;
-    border: none;
-    color: #94a3b8;
-    font-size: 18px;
+    color: #aaa;
+    border: 1px solid #aaa;
+    padding: 6px 15px;
+    font-size: 12px;
+    border-radius: 5px;
     cursor: pointer;
-    padding-left: 10px;
 }
