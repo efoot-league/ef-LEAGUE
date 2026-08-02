@@ -26,3 +26,23 @@ messaging.onBackgroundMessage((payload) => {
 
     self.registration.showNotification(title, options);
 });
+
+// --- NEW PWA REQUIREMENTS FOR CHROME INSTALL PROMPT ---
+
+// 1. Install event: Forces the browser to activate this file immediately
+self.addEventListener('install', (event) => {
+    console.log('Service Worker: Installed for PWA');
+    self.skipWaiting();
+});
+
+// 2. Activate event: Claims control of the app instantly
+self.addEventListener('activate', (event) => {
+    console.log('Service Worker: Activated for PWA');
+    event.waitUntil(self.clients.claim());
+});
+
+// 3. THE MAGIC FETCH EVENT: Chrome strictly requires this to fire 'beforeinstallprompt'
+self.addEventListener('fetch', (event) => {
+    // A basic pass-through that allows normal network requests
+    event.respondWith(fetch(event.request));
+});
