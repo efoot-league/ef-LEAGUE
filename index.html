@@ -935,23 +935,23 @@
     </div>
 </div>
 
-<!-- Install App Banner -->
-<div id="installAppBanner" class="install-banner hidden">
-    <div class="install-content">
-        <i class="fas fa-mobile-alt install-icon"></i>
+<!-- CUSTOM INSTALL BANNER -->
+<div id="customInstallBanner" class="install-banner-overlay" style="display: none;">
+    <div class="install-banner-content">
+        <!-- Replace with your exact efootball logo file -->
+        <img src="1000021072.png" alt="App Icon" class="install-icon">
+        
         <div class="install-text">
-            <strong>Install UCL Ultimate</strong>
-            <span id="installInstructions">Add to your home screen for the full app experience!</span>
+            <h3>Install eFootball UCL</h3>
+            <p>Add to your home screen for full-screen mode and offline access!</p>
+        </div>
+
+        <div class="install-buttons">
+            <button id="installBtn" class="btn-install">Install</button>
+            <button id="cancelInstallBtn" class="btn-cancel">Not Now</button>
         </div>
     </div>
-    
-    <!-- Button for Android/Chrome -->
-    <button id="btnInstallApp" class="btn-install" style="display: none;">Install</button>
-    
-    <!-- Close Button -->
-    <button id="btnCloseInstall" class="btn-close-install"><i class="fas fa-times"></i></button>
 </div>
-
 
 
 <!-- 🎆 Premium Confetti Engine -->
