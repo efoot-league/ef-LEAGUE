@@ -5085,49 +5085,52 @@ html += `
     }
 };
 
-// --- CUSTOM INSTALL BANNER LOGIC ---
-let deferredPrompt; // A variable to save the browser's install event
-const installBanner = document.getElementById('customInstallBanner');
-const installBtn = document.getElementById('installBtn');
-const cancelInstallBtn = document.getElementById('cancelInstallBtn');
+// --- CUSTOM INSTALL BUTTON LOGIC ---
+let deferredPrompt = null;
+const installAppBtn = document.getElementById('installAppBtn');
 
-// 1. Intercept the browser's default install prompt
+// 1. Listen for the browser's install event quietly in the background
 window.addEventListener('beforeinstallprompt', (e) => {
-    // Prevent the default browser mini-banner from appearing at all
+    // Prevent the default browser popup from appearing
     e.preventDefault();
-    
-    // Save the event so we can trigger it when the user clicks our custom button
+    // Save the event to use when they click our button
     deferredPrompt = e;
-    
-    // Reveal our custom HTML banner
-    installBanner.style.display = 'block';
 });
 
-// 2. What happens when they click "Install" on YOUR banner
-installBtn.addEventListener('click', async () => {
-    if (deferredPrompt) {
-        // Show the official system install dialog
-        deferredPrompt.prompt();
-        
-        // Wait to see if they accepted or declined the system dialog
-        const { outcome } = await deferredPrompt.userChoice;
-        
-        // Regardless of their choice, hide our custom HTML banner
-        installBanner.style.display = 'none';
-        
-        // Clear the saved prompt so it can't be used again
-        deferredPrompt = null;
-    }
-});
+// 2. What happens when they click YOUR permanent button
+if (installAppBtn) {
+    installAppBtn.addEventListener('click', async () => {
+        // First check: Are they currently playing inside the installed app?
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
-cancelInstallBtn.addEventListener('click', () => {
-    installBanner.style.display = 'none'; // Simply hides it for this current session
-});
+        if (isStandalone) {
+            alert("You are already playing the installed version of the app!");
+            return; // Stop the code here
+        }
 
-// 4. (Optional Safety) Hide the banner if the app successfully installs
+        // Second check: If they are in a browser and can install it
+        if (deferredPrompt) {
+            // Trigger the official browser install dialog
+            deferredPrompt.prompt();
+            
+            // Wait to see if they click Install or Cancel
+            const { outcome } = await deferredPrompt.userChoice;
+            
+            // If they install it, clear the saved prompt
+            if (outcome === 'accepted') {
+                deferredPrompt = null;
+            }
+        } else {
+            // Third check: If there is no prompt available, they likely already installed it
+            alert("eFootball UCL is already installed on your device!");
+        }
+    });
+}
+
+// 3. Confirm when the installation finishes successfully
 window.addEventListener('appinstalled', () => {
-    installBanner.style.display = 'none';
     deferredPrompt = null;
+    alert("Installation successful! You can now open it from your home screen.");
 });
 
 // --- CSS ANIMATION SPLASH SCREEN LOGIC ---
