@@ -1446,76 +1446,25 @@ body { font-family: 'Rajdhani', sans-serif; background-color: var(--bg-dark); co
     padding-left: 5px;
 }
 
-/* CUSTOM INSTALL BANNER STYLES */
-.install-banner-overlay {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(10px); /* Gives it a premium glass effect */
-    z-index: 999999; /* Ensures it sits above EVERYTHING else */
-    padding: 15px 20px;
-    border-top: 2px solid #00e5ff; /* Cyan neon glow */
-    box-shadow: 0 -5px 20px rgba(0, 229, 255, 0.2);
-    color: white;
-}
-
-.install-banner-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 800px;
-    margin: 0 auto;
-    gap: 15px;
-}
-
-.install-icon {
-    width: 55px;
-    height: 55px;
-    border-radius: 12px;
-}
-
-.install-text {
-    flex-grow: 1; /* Pushes the buttons to the right */
-}
-
-.install-text h3 {
-    margin: 0;
-    font-size: 18px;
-    color: #00e5ff;
-    font-weight: bold;
-}
-
-.install-text p {
-    margin: 4px 0 0;
-    font-size: 13px;
-    color: #cccccc;
-}
-
-.install-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.btn-install {
+/* INSTALL APP BUTTON STYLES */
+.btn-install-sidebar {
     background: #00e5ff;
     color: #000;
     border: none;
-    padding: 10px 20px;
+    padding: 10px 15px;
     font-weight: bold;
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
+    width: 100%;
+    margin-top: 10px;
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+    transition: 0.2s ease;
 }
 
-.btn-cancel {
-    background: transparent;
-    color: #aaa;
-    border: 1px solid #aaa;
-    padding: 6px 15px;
-    font-size: 12px;
-    border-radius: 5px;
-    cursor: pointer;
+/* Adds a nice press effect when clicked */
+.btn-install-sidebar:active {
+    transform: scale(0.95);
 }
+
+
